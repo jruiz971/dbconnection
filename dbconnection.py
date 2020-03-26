@@ -9,9 +9,17 @@ from mysql.connector import errorcode
 with open('db.json') as json_file:
     config = json.load(json_file)
 
+
+
 try:
     cnx = mysql.connector.connect(**config,auth_plugin='mysql_native_password')
-    
+
+    cursor = cnx.cursor()
+    query = ("SELECT * FROM user")
+    cursor.execute(query)
+    for (firstname, lasttname, age) in cursor:
+        print(f"{firstname}, {lasttname} was hired on {age} ")
+
 except mysql.connector.Error as err:
   if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
     print("Something is wrong with your user name or password")
